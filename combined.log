@@ -1,0 +1,3 @@
+2025-03-05 16:44:32 : info: Successfully started server on port ${ServerConfig.PORT}
+2025-03-05 16:45:49 : info: Successfully started server on port ${ServerConfig.PORT}
+2025-03-05 16:46:52 : info: Successfully started server on port 3700
