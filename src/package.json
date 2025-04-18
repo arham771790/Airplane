@@ -1,0 +1,13 @@
+{
+  "name": "src",
+  "version": "1.0.0",
+  "description": "'src' -> Inside the src folder all the actual source code regarding the project will\r reside, this will not include any kind of tests. (You might want to make separate\r tests folder)",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

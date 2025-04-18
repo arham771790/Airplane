@@ -1,5 +1,3 @@
-import { info } from "../controllers/info.controller.js";
+import {createAeroplane} from '../controllers/airplane.controller.js';
 
-export const infocontroller = {
-  info,
-};
+export  {createAeroplane};
