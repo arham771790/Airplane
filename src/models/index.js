@@ -5,6 +5,8 @@ import { fileURLToPath, pathToFileURL } from "url";
 import process from "process";
 import configJson from "../config/config.json" assert { type: "json" };
 import airplaneModel from "../models/airplane.js";
+import cityModel from "../models/city.js";
+
 // Convert __dirname for ES module support
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -37,5 +39,5 @@ Object.keys(db).forEach((modelName) => {
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 db.Airplane=airplaneModel(sequelize);
-
+db.City = cityModel(sequelize);
 export default db; // ✅ Use ES module export

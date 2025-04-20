@@ -1,3 +1,3 @@
 import { AirplaneRepo } from "./airplane-repo.js";
-
-export {AirplaneRepo};
+import { CityRepo } from "./city-repo.js";
+export {AirplaneRepo,CityRepo};
