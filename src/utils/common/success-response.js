@@ -4,8 +4,8 @@ export const successResponse=(message="Successfully completed the request",
     
     return {
     success:true,
-    message:"Successfully completed the request",
-    data:{},
-    error:{}
+    message,
+    data,
+    error
 }
 }

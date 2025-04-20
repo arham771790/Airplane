@@ -1,9 +1,9 @@
 import express from 'express';
  
 import airplaneRoutes from '../v1/airplane-routes.js';
-import { validateRequest } from '../../middlewares/airplane-create-middleware.js';
-const router = express.Router();
 
-router.use('/airplane', validateRequest,airplaneRoutes);
+const router = express.Router();
+console.log("inside routes");
+router.use('/airplane',airplaneRoutes);
 
 export default router;

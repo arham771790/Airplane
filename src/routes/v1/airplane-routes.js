@@ -1,8 +1,12 @@
 import express from 'express';
-import { createAeroplane } from '../../controllers/index.js';
-
+import { createAeroplane,getAeroPlanes, getAeroPlanewithId ,destroyAeroPlane,updateAeroPlane} from '../../controllers/index.js';
+import { validateRequest } from '../../middlewares/airplane-create-middleware.js';
 const app = express();
 const router=express.Router();
-
-router.post('/',createAeroplane);
+console.log("Inside airplane routes");
+router.post('/',validateRequest,createAeroplane);
+router.get('/:id',getAeroPlanewithId);
+router.get('/',getAeroPlanes);
+router.delete('/:id',destroyAeroPlane);
+router.put('/:id',updateAeroPlane);
 export default router;

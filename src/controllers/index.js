@@ -1,3 +1,3 @@
-import {createAeroplane} from '../controllers/airplane.controller.js';
+import {createAeroplane,getAeroPlanes,getAeroPlanewithId,updateAeroPlane,destroyAeroPlane} from '../controllers/airplane.controller.js';
 
-export  {createAeroplane};
+export  {createAeroplane,getAeroPlanes,getAeroPlanewithId,updateAeroPlane,destroyAeroPlane};
