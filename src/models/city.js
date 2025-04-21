@@ -4,6 +4,12 @@ export default (sequelize) => {
   class City extends Model {
     static associate(models) {
       // define associations here, if needed
+      this.hasMany(models.Airport,{
+        foreignKey:'cityID',
+        onDelete:'CASCADE',
+        onUpdate:'CASCADE',
+
+      })
     }
   }
 
