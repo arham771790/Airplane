@@ -7,7 +7,7 @@ export default (sequelize) => {
       this.hasMany(models.Airport,{
         foreignKey:'cityID',
         onDelete:'CASCADE',
-        onUpdate:'CASCADE',
+       
 
       })
     }

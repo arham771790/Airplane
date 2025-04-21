@@ -10,7 +10,7 @@ export const validateRequest = (req, res, next) => {
   if (missingFields.length > 0) {
     return res
       .status(StatusCodes.BAD_REQUEST)
-      .json(errorResponse(`Missing required fields: ${missingFields.join(", ")}`));
+      .json(errorResponse(`Missing required fieldsssss: ${missingFields.join(", ")}`));
   }
 
   next();

@@ -72,6 +72,7 @@ export const updateCity = async (id, data) => {
     return { message: "City updated successfully" };
   } catch (error) {
     if (error instanceof AppError) throw error;
+    console.log(error);
     throw new AppError("Failed to update city", StatusCodes.INTERNAL_SERVER_ERROR);
   }
 };

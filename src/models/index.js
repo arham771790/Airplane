@@ -6,7 +6,8 @@ import process from "process";
 import configJson from "../config/config.json" assert { type: "json" };
 import airplaneModel from "../models/airplane.js";
 import cityModel from "../models/city.js";
-
+import airportModel from "../models/airport.js"
+import flightModel from "./flight.js";
 // Convert __dirname for ES module support
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -40,4 +41,6 @@ db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 db.Airplane=airplaneModel(sequelize);
 db.City = cityModel(sequelize);
+db.Airport=airportModel(sequelize);
+db.Flight=flightModel(sequelize);
 export default db; // ✅ Use ES module export
