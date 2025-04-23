@@ -5,7 +5,7 @@ export default (sequelize) => {
     static associate(models) {
       // define associations here, if needed
       this.hasMany(models.Flight,{
-        foreignKey:'id',
+        foreignKey:'airplaneId',
         onDelete:'CASCADE',
        
 

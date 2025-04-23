@@ -21,7 +21,14 @@ import {
   updateAirport,
   destroyAirport
 } from './airport.controller.js';
-
+import 
+{
+  createFlight,
+  getFlights,
+  getFlightById,
+  updateFlight,
+  destroyFlight
+} from './flights.controller.js'
 export {
   createAeroplane,
   getAeroPlanes,
@@ -39,5 +46,13 @@ export {
   getAirports,
   getAirportWithId,
   updateAirport,
-  destroyAirport
+  destroyAirport,
+
+  createFlight,
+  getFlights,
+  getFlightById,
+  updateFlight,
+  destroyFlight
+
+
 };

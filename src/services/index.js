@@ -21,7 +21,14 @@ import {
     destroyCity,
     updateCity
   } from "../services/city-service.js";
-  
+  import
+  {
+    createFlight,
+    getFlights,
+    getFlightWithId,
+    destroyFlight,
+    updateFlight
+  } from './flight-service.js'
   // Exporting airport-related services
   export { createAirport, getAirports, getAirportWithId, destroyAirport, updateAirport };
   
@@ -31,3 +38,9 @@ import {
   // Exporting city-related services
   export { createCity, getCities, getCityWithId, destroyCity, updateCity };
   
+  export {
+    createFlight,
+    getFlights,
+    getFlightWithId,
+    destroyFlight,
+    updateFlight};

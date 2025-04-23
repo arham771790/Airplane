@@ -29,7 +29,7 @@ export default (sequelize) => {
       allowNull:false
     },
     airplaneId: {
-      type: DataTypes.STRING,
+      type: DataTypes.INTEGER,
       allowNull:false,
       references:{
         model:'Airplanes',
