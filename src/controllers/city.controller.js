@@ -15,10 +15,12 @@ import { Logger } from "../config/index.js";
  * req-body: { name: "New York" }
  */
 export const createCity = async (req, res) => {
-  console.log("Inside createCity controller");
+  console.log("Inside createCity controller...");
+  console.log("Controller city",req.body);
 
   try {
     const city = await createCityService(req.body);
+    console.log("city lll",city);
     return res.status(StatusCodes.CREATED).json(successResponse(city));
   } catch (error) {
     return res

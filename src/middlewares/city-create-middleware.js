@@ -3,7 +3,7 @@ import { errorResponse } from "../utils/common/index.js";
 
 export const validateCityRequest = (req, res, next) => {
   const missingFields = [];
-
+  console.log("Request Body",req.body);
   if (!req.body.name) missingFields.push("name");
 
   if (missingFields.length > 0) {

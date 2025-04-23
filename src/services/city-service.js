@@ -6,11 +6,13 @@ const cityRepository = new CityRepo();
 
 // CREATE City
 export const createCity = async (data) => {
+  console.log(data);
   console.log("Inside createCity service");
   try {
     const newCity = await cityRepository.create(data);
     return newCity;
   } catch (error) {
+    console.log(error);
     if (error.name === "SequelizeValidationError") {
       const explanation = error.errors.map(err => err.message);
       throw new AppError(explanation, StatusCodes.BAD_REQUEST);
