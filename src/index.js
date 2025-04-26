@@ -4,7 +4,8 @@ import bodyParser from "body-parser";
 import apiRoutes from "../src/routes/index.js"
 import path  from "path";
 const app = express();
-app.use(express.json());
+app.use(express.json()); // Parses application/json
+app.use(express.urlencoded({ extended: true })); // Parses application/x-www-form-urlencoded
 app.use(bodyParser.json()); 
 app.use('/api',apiRoutes);
 app.listen(ServerConfig.PORT,()=>{

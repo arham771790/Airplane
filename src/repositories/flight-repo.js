@@ -6,10 +6,11 @@ export const FlightRepo = class extends CrudRepo {
     super(db.Flight); // Correctly initialize with Flight model
   }
 
-  async getAllFlights(filter) {
+  async getAllFlights(filter,sort) {
     try {
       const response = await db.Flight.findAll({
         where: filter,
+        order: sort
       });
       return response;
     } catch (error) {

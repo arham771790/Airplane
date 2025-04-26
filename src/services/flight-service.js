@@ -67,6 +67,7 @@ export const createFlight = async (data) => {
  */
 export const getFlights = async (query) => {
   let customFilter = {}; // Initialize the filter object to store dynamic filters
+  let sortFilter={}; // Initialize a sort object to store different sorting ie by price asc ,desc or date etc
   console.log(query);
 
   // Filter based on trip (departure and arrival airports)
@@ -102,13 +103,30 @@ export const getFlights = async (query) => {
     } else {
       throw new AppError("Invalid price format. Use 'minPrice-maxPrice'.", StatusCodes.BAD_REQUEST);
     }
+
   }
 
   // Filter based on date range (departure and/or arrival date)
   if (query.departureDate) {
-    customFilter.departureTime = {
-      [Op.gte]: new Date(query.departureDate) // Filter flights with departure on or after the provided date
-    };
+    const [startDateString, endDateString] = query.departureDate.split('-');
+    const startDate = new Date(startDateString);
+
+    if (endDateString) {
+      const endDate = new Date(endDateString);
+      endDate.setDate(endDate.getDate() + 1); // Make the end date exclusive for the query
+      customFilter.departureTime = {
+        [Op.gte]: startDate,
+        [Op.lt]: endDate,
+      };
+    } else {
+      // If only one date is provided, filter for the entire day
+      const endDate = new Date(startDate);
+      endDate.setDate(endDate.getDate() + 1); // End of the day (exclusive)
+      customFilter.departureTime = {
+        [Op.gte]: startDate,
+        [Op.lt]: endDate,
+      };
+    }
   }
 
   if (query.arrivalDate) {
@@ -116,10 +134,21 @@ export const getFlights = async (query) => {
       [Op.lte]: new Date(query.arrivalDate) // Filter flights with arrival on or before the provided date
     };
   }
-
+  if(query.travellers)
+  {
+    customFilter.totalSeats={
+      [Op.gte]:parseInt(query.travellers)
+    }
+  }
+    if(query.sort)
+    {
+      const params=query.sort.split(',');
+      const sortFilters=params.map((param)=>param.split('_'));
+      sortFilter=sortFilters;
+    }
   try {
     // Call the repository method with the custom filter to get flights
-    return await flightRepository.getAllFlights(customFilter);
+    return await flightRepository.getAllFlights(customFilter,sortFilter);
   } catch (error) {
     // Handle any error that occurs during the process
     throw new AppError("Cannot fetch flight data", StatusCodes.INTERNAL_SERVER_ERROR);

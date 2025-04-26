@@ -22,9 +22,10 @@ export const CrudRepo = class {
       return response;
   }
 
-  async getAll(filter = {}) {
+  async getAll(filter = {},sort={}) {
     const response = await this.model.findAll({
-      where: filter
+      where: filter,
+      order: sort,
     });
     return response;
   }
