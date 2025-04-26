@@ -22,9 +22,11 @@ export const CrudRepo = class {
       return response;
   }
 
-  async getAll() {
-      const response = await this.model.findAll();
-      return response;
+  async getAll(filter = {}) {
+    const response = await this.model.findAll({
+      where: filter
+    });
+    return response;
   }
 
   async update(id, data) {

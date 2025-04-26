@@ -1,9 +1,10 @@
 import { FlightRepo } from "../repositories/index.js";
 import { StatusCodes } from "http-status-codes";
 import AppError from "../error/app-error.js";
-
-
+import { utilityFunctions } from "../utils/index.js";
+import { Op } from "sequelize";
 const flightRepository = new FlightRepo();
+
 
 /**
  * Create a new flight
@@ -31,6 +32,17 @@ export const createFlight = async (data) => {
     );
   }
 
+  const { arrivalTime, departureTime } = data;
+
+  if (utilityFunctions.helperFunctions.compareTime(arrivalTime, departureTime)) {
+    // arrival > departure → invalid → throw error
+    throw new AppError(
+      "Arrival time cannot be later than departure time",
+      StatusCodes.BAD_REQUEST
+    );
+  }
+  
+
   try {
     const newFlight = await flightRepository.create(data);
     return newFlight;
@@ -43,21 +55,77 @@ export const createFlight = async (data) => {
     if (error.name === "SequelizeForeignKeyConstraintError") {
       throw new AppError("Foreign key constraint failed. Ensure airplaneId and airport codes are valid.", StatusCodes.BAD_REQUEST);
     }
+
     console.log(error);
     throw new AppError("An unexpected error occurred while creating the flight", StatusCodes.INTERNAL_SERVER_ERROR);
   }
 };
 
+
 /**
  * Get all flights
  */
-export const getFlights = async () => {
+export const getFlights = async (query) => {
+  let customFilter = {}; // Initialize the filter object to store dynamic filters
+  console.log(query);
+
+  // Filter based on trip (departure and arrival airports)
+  if (query.trips) {
+    const [departureAirportId, arrivalAirportId] = query.trips.split('-');
+    customFilter.departureAirportId = departureAirportId;
+    customFilter.arrivalAirportId = arrivalAirportId;
+
+    if (departureAirportId === arrivalAirportId) {
+      throw new AppError("Arrival and destination airport cannot be the same", StatusCodes.BAD_REQUEST);
+    }
+  }
+
+  // Filter based on price range in the format "minPrice-maxPrice"
+  if (query.price) {
+    const [minPrice, maxPrice] = query.price.split('-'); // Split the price range
+
+    if (minPrice && maxPrice) {
+      // If both minPrice and maxPrice are provided, filter based on the range
+      customFilter.price = {
+        [Op.between]: [parseInt(minPrice), parseInt(maxPrice)]
+      };
+    } else if (minPrice) {
+      // If only minPrice is provided, filter for prices greater than or equal to minPrice
+      customFilter.price = {
+        [Op.gte]: parseInt(minPrice)
+      };
+    } else if (maxPrice) {
+      // If only maxPrice is provided, filter for prices less than or equal to maxPrice
+      customFilter.price = {
+        [Op.lte]: parseInt(maxPrice)
+      };
+    } else {
+      throw new AppError("Invalid price format. Use 'minPrice-maxPrice'.", StatusCodes.BAD_REQUEST);
+    }
+  }
+
+  // Filter based on date range (departure and/or arrival date)
+  if (query.departureDate) {
+    customFilter.departureTime = {
+      [Op.gte]: new Date(query.departureDate) // Filter flights with departure on or after the provided date
+    };
+  }
+
+  if (query.arrivalDate) {
+    customFilter.arrivalTime = {
+      [Op.lte]: new Date(query.arrivalDate) // Filter flights with arrival on or before the provided date
+    };
+  }
+
   try {
-    return await flightRepository.getAll();
+    // Call the repository method with the custom filter to get flights
+    return await flightRepository.getAllFlights(customFilter);
   } catch (error) {
+    // Handle any error that occurs during the process
     throw new AppError("Cannot fetch flight data", StatusCodes.INTERNAL_SERVER_ERROR);
   }
 };
+
 
 /**
  * Get flight by ID

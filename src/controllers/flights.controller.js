@@ -32,14 +32,20 @@ export const createFlight = async (req, res) => {
  */
 export const getFlights = async (req, res) => {
   try {
-    const flights = await getFlightsService();
+    const flights = await getFlightsService(req.query); // pass query parameters
     return res.status(StatusCodes.OK).json(successResponse(flights));
   } catch (error) {
     return res
       .status(error.statusCode || StatusCodes.INTERNAL_SERVER_ERROR)
-      .json(errorResponse("Something went wrong while fetching flights", error.explanation));
+      .json(
+        errorResponse(
+          "Something went wrong while fetching flights",
+          error.explanation || error.message
+        )
+      );
   }
 };
+
 
 /**
  * GET: /flights/:id
