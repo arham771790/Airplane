@@ -9,6 +9,10 @@ export default (sequelize) => {
         as:'airplaneDetails',
         onDelete:'CASCADE',
       });
+      this.hasMany(models.Seat,{
+        foreignKey:'airplaneId',
+        onDelete:'CASCADE',
+      });
     }
   }
 

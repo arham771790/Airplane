@@ -1,5 +1,6 @@
 import { errorResponse } from "../common/error-response.js";
 import { successResponse } from "./success-response.js";
-export { errorResponse, successResponse };
+import { seatType } from "./enums.js";
+export { errorResponse, successResponse ,seatType};
 
 

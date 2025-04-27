@@ -4,7 +4,7 @@ import airplaneModel from "../models/airplane.js";
 import cityModel from "../models/city.js";
 import airportModel from "../models/airport.js";
 import flightModel from "../models/flight.js";
-
+import seatModel from "../models/seat.js";
 const env = process.env.NODE_ENV || "development";
 const config = configJson[env];
 
@@ -22,6 +22,7 @@ db.Airplane = airplaneModel(sequelize, Sequelize.DataTypes);
 db.City = cityModel(sequelize, Sequelize.DataTypes);
 db.Airport = airportModel(sequelize, Sequelize.DataTypes);
 db.Flight = flightModel(sequelize, Sequelize.DataTypes);
+db.Seat=seatModel(sequelize,Sequelize.DataTypes);
 
 // 👉 Call associate if available
 Object.keys(db).forEach((modelName) => {
