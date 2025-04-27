@@ -1,5 +1,6 @@
 import { CrudRepo } from "./crud-repo.js";
 import db from "../models/index.js";
+import { Sequelize } from "sequelize";
 
 export const FlightRepo = class extends CrudRepo {
   constructor() {
@@ -10,8 +11,45 @@ export const FlightRepo = class extends CrudRepo {
     try {
       const response = await db.Flight.findAll({
         where: filter,
-        order: sort
+        order: sort,
+        include: [
+          {
+            model: db.Airplane,
+            required: true,
+            as: "airplaneDetails", // Alias for Airplane association
+            
+          },
+          {
+            model: db.Airport,
+            as: "DepartureAirportDetails", // Alias for departure airport
+            required: true,
+            on:{
+              col1:Sequelize.where(Sequelize.col("Flight.departureAirportId"),"=",Sequelize.col("DepartureAirportDetails.code"))
+            },
+            include:
+            {
+              model:db.City,
+              required:true,
+            }
+          },
+          {
+            model: db.Airport,
+            as: "ArrivalAirportDetails", // Alias for arrival airport
+            required: true,
+            on:{
+              col1:Sequelize.where(Sequelize.col("Flight.arrivalAirportId"),"=",Sequelize.col("ArrivalAirportDetails.code"))
+            },
+            include:
+            {
+              model:db.City,
+              required:true,
+            }
+            
+          }
+
+        ]
       });
+      console.log("Query Response:", response);
       return response;
     } catch (error) {
       console.error("Error fetching flights with filter:", error);

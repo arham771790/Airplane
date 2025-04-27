@@ -1,46 +1,33 @@
-import fs from "fs";
-import path from "path";
 import { Sequelize } from "sequelize";
-import { fileURLToPath, pathToFileURL } from "url";
-import process from "process";
 import configJson from "../config/config.json" assert { type: "json" };
 import airplaneModel from "../models/airplane.js";
 import cityModel from "../models/city.js";
-import airportModel from "../models/airport.js"
-import flightModel from "./flight.js";
-// Convert __dirname for ES module support
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+import airportModel from "../models/airport.js";
+import flightModel from "../models/flight.js";
 
 const env = process.env.NODE_ENV || "development";
 const config = configJson[env];
+
+const sequelize = config.use_env_variable
+  ? new Sequelize(process.env[config.use_env_variable], config)
+  : new Sequelize(config.database, config.username, config.password, config);
+
 const db = {};
 
-let sequelize;
-if (config.use_env_variable) {
-  sequelize = new Sequelize(process.env[config.use_env_variable], config);
-} else {
-  sequelize = new Sequelize(config.database, config.username, config.password, config);
-}
+db.sequelize = sequelize;
+db.Sequelize = Sequelize;
 
-fs.readdirSync(__dirname)
-  .filter((file) => file.endsWith(".js") && file !== "index.js")
-  .forEach(async (file) => {
-    const modelModule = await import(pathToFileURL(path.join(__dirname, file)).href); // ✅ Fixed path issue
-    const model = modelModule.default(sequelize, Sequelize.DataTypes);
-    db[model.name] = model;
-  });
+// Initialize models
+db.Airplane = airplaneModel(sequelize, Sequelize.DataTypes);
+db.City = cityModel(sequelize, Sequelize.DataTypes);
+db.Airport = airportModel(sequelize, Sequelize.DataTypes);
+db.Flight = flightModel(sequelize, Sequelize.DataTypes);
 
+// 👉 Call associate if available
 Object.keys(db).forEach((modelName) => {
   if (db[modelName].associate) {
     db[modelName].associate(db);
   }
 });
 
-db.sequelize = sequelize;
-db.Sequelize = Sequelize;
-db.Airplane=airplaneModel(sequelize);
-db.City = cityModel(sequelize);
-db.Airport=airportModel(sequelize);
-db.Flight=flightModel(sequelize);
-export default db; // ✅ Use ES module export
+export default db;

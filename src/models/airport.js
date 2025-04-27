@@ -9,42 +9,50 @@ export default (sequelize) => {
      * The `models/index.js` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
-      this.belongsTo(models.City,{
-        foreignKey:'cityID',
-        onDelete:'CASCADE',
-      })
-      this.hasMany(models.Airport,{
-        foreignKey:'departureAirportId',
-        onDelete:'CASCADE'
+      // define association with City
+      this.belongsTo(models.City, {
+        foreignKey: 'cityID',
+        onDelete: 'CASCADE',
       });
-      this.hasMany(models.Airport,{
-        foreignKey:'arrivalAirportId',
-        onDelete:'CASCADE'
+
+      // Self-referencing associations for departure and arrival airports
+      this.hasMany(models.Flight, {
+        foreignKey: 'departureAirportId', // ensure this matches the foreign key in your Flights table
+        as: 'DepartureAirportDetails',
+        onDelete: 'CASCADE',
+      });
+
+      this.hasMany(models.Flight, {
+        foreignKey: 'arrivalAirportId', // ensure this matches the foreign key in your Flights table
+        as: 'ArrivalAirportDetails',
+        onDelete: 'CASCADE',
       });
     }
   }
 
-  Airport.init({
-    name: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      unique: true,
+  Airport.init(
+    {
+      name: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        unique: true,
+      },
+      code: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        unique: true,
+      },
+      address: DataTypes.STRING,
+      cityID: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+      },
     },
-    code: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      unique: true,
-    },
-    address: DataTypes.STRING,
-    cityID: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
+    {
+      sequelize,
+      modelName: 'Airport',
     }
-  }, {
-    sequelize,
-    modelName: 'Airport',
-  });
+  );
 
   return Airport;
 };

@@ -9,16 +9,25 @@ export default (sequelize) => {
      * The `models/index.js` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
-      this.belongsTo(models.Airplane,{
-        foreignKey:'airplaneId',
-        onDelete:'CASCADE',
+      // Define association with Airplane
+      this.belongsTo(models.Airplane, {
+        foreignKey: 'airplaneId',
+        as: 'airplaneDetails', // Alias for airplane association
+        onDelete: 'CASCADE',
       });
-      this.belongsTo(models.Airport,{
-        foreignKey:'departureAirportId'
+    
+      // Define association with Airport for departure airport
+      this.belongsTo(models.Airport, {
+        foreignKey: 'departureAirportId',
+        as: 'DepartureAirportDetails', // Alias for departure airport
+        required: true,
       });
-      this.belongsTo(models.Airport,{
-        foreignKey:'arrivalAirportId'
+    
+      // Define association with Airport for arrival airport
+      this.belongsTo(models.Airport, {
+        foreignKey: 'arrivalAirportId',
+        as: 'ArrivalAirportDetails', // Alias for arrival airport
+        required: true,
       });
     }
   }
