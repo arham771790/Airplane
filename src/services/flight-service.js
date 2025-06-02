@@ -4,7 +4,7 @@ import AppError from "../error/app-error.js";
 import { utilityFunctions } from "../utils/index.js";
 import { Op } from "sequelize";
 const flightRepository = new FlightRepo();
-
+import { successResponse } from "../utils/common/success-response.js";
 
 /**
  * Create a new flight
@@ -209,3 +209,17 @@ export const updateFlight = async (id, data) => {
     throw new AppError("Failed to update flight", StatusCodes.INTERNAL_SERVER_ERROR);
   }
 };
+export const getFlight= async(id)=>{
+  try {
+    const flight = await flightRepository.get(id);
+    if (!flight) {
+      throw new AppError(`No flight found with id: ${id}`, StatusCodes.NOT_FOUND);
+    }
+    successResponse.data= flight;
+    successResponse.message = "Flight fetched successfully";
+    successResponse.statusCode = StatusCodes.OK;
+    return flight;
+  } catch (error) {
+    throw new AppError("Failed to fetch flight by ID", StatusCodes.INTERNAL_SERVER_ERROR);
+  }
+}

@@ -27,7 +27,9 @@ import
   getFlights,
   getFlightById,
   updateFlight,
-  destroyFlight
+  destroyFlight,
+  getFlight
+ 
 } from './flights.controller.js'
 export {
   createAeroplane,
@@ -52,7 +54,8 @@ export {
   getFlights,
   getFlightById,
   updateFlight,
-  destroyFlight
+  destroyFlight,
+  getFlight
 
 
 };

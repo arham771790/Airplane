@@ -3,13 +3,10 @@ import { Model, DataTypes } from "sequelize";
 export default (sequelize) => {
   class City extends Model {
     static associate(models) {
-      // define associations here, if needed
+      
       this.hasMany(models.Airport,{
         foreignKey:'cityID',
-        
         onDelete:'CASCADE',
-       
-
       })
     }
   }
@@ -21,15 +18,15 @@ export default (sequelize) => {
         allowNull: false,
         unique: true,
         validate: {
-          isAlpha: true, // Optional: only allow alphabetic characters
+          isAlpha: true,
         },
       },
     },
     {
       sequelize,
       modelName: "City",
-      tableName: "Cities", // Optional: make explicit if table name differs
-      //timestamps: false, // Uncomment if you do not want createdAt/updatedAt
+      tableName: "Cities",
+      
     }
   );
 

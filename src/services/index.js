@@ -27,7 +27,8 @@ import {
     getFlights,
     getFlightWithId,
     destroyFlight,
-    updateFlight
+    updateFlight,
+    getFlight
   } from './flight-service.js'
   // Exporting airport-related services
   export { createAirport, getAirports, getAirportWithId, destroyAirport, updateAirport };
@@ -43,4 +44,6 @@ import {
     getFlights,
     getFlightWithId,
     destroyFlight,
-    updateFlight};
+    updateFlight,
+    getFlight
+  };

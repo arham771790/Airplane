@@ -4,6 +4,7 @@ import {
   getFlightWithId as getFlightByIdService,
   destroyFlight as destroyFlightService,
   updateFlight as updateFlightService,
+  getFlight as getFlightService
 } from "../services/index.js";
 
 import { StatusCodes } from "http-status-codes";
@@ -88,3 +89,13 @@ export const updateFlight = async (req, res) => {
       .json(errorResponse("Something went wrong while updating the flight", error.explanation));
   }
 };
+export const getFlight=async(req,res)=>{
+  try {
+    const flight = await getFlightService(req.params.id);
+    return res.status(StatusCodes.OK).json(successResponse(flight));
+  } catch (error) {
+    return res
+      .status(StatusCodes.NOT_FOUND)
+      .json(errorResponse("Flight not found", error.explanation));
+  }
+}
