@@ -4,7 +4,8 @@ import {
   getFlightWithId as getFlightByIdService,
   destroyFlight as destroyFlightService,
   updateFlight as updateFlightService,
-  getFlight as getFlightService
+  getFlight as getFlightService,
+  updateRemainingSeats as updateRemainingSeatsService
 } from "../services/index.js";
 
 import { StatusCodes } from "http-status-codes";
@@ -99,3 +100,28 @@ export const getFlight=async(req,res)=>{
       .json(errorResponse("Flight not found", error.explanation));
   }
 }
+export const updateRemainingSeats = async (req, res) => {
+  try {
+    const seats = parseInt(req.body.seats);
+    if (isNaN(seats)) {
+      throw new AppError("Invalid seats value", StatusCodes.BAD_REQUEST);
+    }
+    
+    // dec = true if dec is 1 or undefined, else false
+    const dec = req.body.dec === undefined || req.body.dec === '1' || req.body.dec === 1;
+
+    console.log("Seats:", seats, "Decrement:", dec);
+
+    const result = await updateRemainingSeatsService({
+      flightId: req.params.id,
+      seats: seats,
+      dec: dec,
+    });
+
+    return res.status(StatusCodes.OK).json(successResponse(result));
+  } catch (error) {
+    return res
+      .status(error.statusCode || StatusCodes.INTERNAL_SERVER_ERROR)
+      .json(errorResponse("Something went wrong while updating remaining seats", error.explanation));
+  }
+};

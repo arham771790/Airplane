@@ -223,3 +223,25 @@ export const getFlight= async(id)=>{
     throw new AppError("Failed to fetch flight by ID", StatusCodes.INTERNAL_SERVER_ERROR);
   }
 }
+export const updateRemainingSeats = async (data) => {
+  console.log("Udasdsadasdpdating remaining seats for flight:", data.flightId, "Seats:", data.seats, "Decrement:", data.dec);
+  if (!data.flightId) {
+    throw new AppError("Missing required fields: flightId", StatusCodes.BAD_REQUEST);
+  }
+
+  if (typeof data.seats !== "number") {
+    throw new AppError("Missing or invalid field: seats", StatusCodes.BAD_REQUEST);
+  }
+
+  try {
+    const response = await flightRepository.updateRemainingSeats(
+      data.flightId,
+      data.seats,
+      data.dec   // Only 3 arguments expected: flightId, seats, dec
+    );
+    return response;
+  } catch (error) {
+    console.error("Error updating remaining seats:", error);
+    throw new AppError("Failed to update remaining seats", StatusCodes.INTERNAL_SERVER_ERROR);
+  }
+};

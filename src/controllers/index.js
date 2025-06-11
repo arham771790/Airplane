@@ -28,7 +28,9 @@ import
   getFlightById,
   updateFlight,
   destroyFlight,
-  getFlight
+  getFlight,
+  updateRemainingSeats
+
  
 } from './flights.controller.js'
 export {
@@ -55,7 +57,8 @@ export {
   getFlightById,
   updateFlight,
   destroyFlight,
-  getFlight
+  getFlight,
+  updateRemainingSeats
 
 
 };

@@ -4,9 +4,11 @@ import {
     getFlights,
     getFlightById,
     updateFlight,
-    destroyFlight
+    destroyFlight,
+    getFlight,
+    updateRemainingSeats
   } from '../../controllers/flights.controller.js';
- import {validateFlightRequest} from '../../middlewares/flight-create-middleware.js'
+ import {validateFlightRequest,validateFlightUpdateRequest} from '../../middlewares/flight-create-middleware.js'
 
 const router = express.Router();
 
@@ -27,4 +29,8 @@ router.patch('/:id', updateFlight);
 // DELETE /flights/:id - Delete flight by ID
 router.delete('/:id', destroyFlight);
 
+// GET /flights/:id - Get flight by ID (duplicate route, consider removing)
+router.get('/:id', getFlight);
+// PATCH /flights/:id/update-seats - Update remaining seats for a flight
+router.patch('/:id/seats',validateFlightUpdateRequest,updateRemainingSeats);
 export default router;

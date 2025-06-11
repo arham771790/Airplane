@@ -56,4 +56,28 @@ export const FlightRepo = class extends CrudRepo {
       throw error;
     }
   }
-};
+ async updateRemainingSeats(flightId, seats, dec = true) {
+  console.log("oooUpdating remaining seats for flight:", flightId, "Seats:", seats, "Decrement:", dec);
+  const targetFlight = await db.Flight.findByPk(flightId);
+
+  if (!targetFlight) {
+    throw new Error(`Flight with id ${flightId} not found`);
+  }
+
+  if (dec) {
+    if (targetFlight.totalSeats < seats) {
+      throw new Error(`Cannot decrement by ${seats}. Only ${targetFlight.totalSeats} seats available.`);
+    }
+
+    await targetFlight.decrement('totalSeats', {
+      by: seats,
+    });
+  } else {
+    await targetFlight.increment('totalSeats', {
+      by: seats,
+    });
+  }
+  await targetFlight.reload(); // Reload to get the updated totalSeats
+  return targetFlight; // Return the updated flight object
+} 
+}
