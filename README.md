@@ -130,7 +130,7 @@ Here are some sample endpoints (base URL: `/api/v1/`):
 
 **Arham Sheikh**
 Backend Developer | Building scalable systems
-[LinkedIn](https://www.linkedin.com/in/arhamsheikh) • [GitHub](https://github.com/your-username)
+[LinkedIn](https://www.linkedin.com/in/arhamsheikh044) • [GitHub](https://github.com/arham771790)
 
 ---
 
